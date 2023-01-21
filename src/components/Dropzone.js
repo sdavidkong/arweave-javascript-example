@@ -1,5 +1,7 @@
 import React, { useState, useCallback } from "react";
 import Arweave from "arweave";
+import { useDropzone } from "react-dropzone";
+import "../App.css";
 
 const arweave = Arweave.init({
   host: "arweave.net",
@@ -9,18 +11,16 @@ const arweave = Arweave.init({
 
 const Dropzone = () => {
   const [file, setFile] = useState(null);
-
-  const handleDrop = useCallback((acceptedFiles) => {
-    if (acceptedFiles.length === 1) {
-      if (acceptedFiles[0].type.startsWith("image/")) {
+  const { getRootProps, getInputProps } = useDropzone({
+    accept: "image/*",
+    onDrop: (acceptedFiles) => {
+      if (acceptedFiles.length === 1) {
         setFile(acceptedFiles[0]);
       } else {
-        alert("Not an image file.");
+        alert("Please drop only 1 file at a time.");
       }
-    } else {
-      alert("Please drop only 1 file at a time.");
-    }
-  }, []);
+    },
+  });
 
   const handleUpload = useCallback(async () => {
     if (file) {
@@ -40,33 +40,30 @@ const Dropzone = () => {
             `${uploader.pctComplete}% complete, ${uploader.uploadedChunks}/${uploader.totalChunks}`
           );
         }
+        // invoke the callback function when the upload is complete
+
+        setFile(null);
       };
     }
   }, [file]);
 
   return (
-    <div className="dropzone">
+    <div>
       {file ? (
         <div>
           <p>{file.name}</p>
           <p>{file.type}</p>
           <p>{file.size} bytes</p>
-          <button onClick={() => handleUpload([file])}>
+          <button className="button" onClick={handleUpload}>
             Upload to Arweave
           </button>
         </div>
       ) : (
-        <div>
-          <button
-            onClick={() => {
-              const input = document.createElement("input");
-              input.type = "file";
-              input.onchange = (e) => handleDrop(e.target.files);
-              input.click();
-            }}
-          >
-            Select file
-          </button>
+        <div className="dropzone" {...getRootProps()}>
+          <input {...getInputProps()} />
+          <p>
+            Drag & Drop an Image Here <br></br> Or click to Select a File
+          </p>
         </div>
       )}
     </div>

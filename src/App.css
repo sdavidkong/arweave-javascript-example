@@ -46,3 +46,50 @@
   align-items: center;
   height: 100vh;
 }
+
+.dropzone {
+  font-family: "Futura", sans-serif;
+  font-weight: bold;
+  border: 2px dashed #ccc;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  width: 500px;
+  margin: 50px auto;
+  background-color: #add8e6; /* baby blue */
+  border: solid 5px #ff6b6b;
+  transition: box-shadow 0.3s ease-in-out;
+  box-shadow: 0 0 0 0 transparent;
+  color: #333333;
+}
+
+.dropzone:hover {
+  background-color: #87cefa; /* light blue */
+  box-shadow: 0 0 0 10px rgba(77, 144, 254, 0.4);
+  border: solid 5px;
+  border-color: #ffff00;
+}
+.dropzone p {
+  text-align: center;
+  font-size: 20px;
+  padding: 10px;
+}
+
+.button {
+  outline: none;
+  border: 1px solid black;
+  backgroundcolor: white;
+  padding: 10px;
+  width: 200px;
+  marginbottom: 10;
+  cursor: pointer;
+}
+
+.input {
+  backgroundcolor: #ddd;
+  outline: none;
+  border: none;
+  width: 200px;
+  fontsize: 16px;
+  padding: 10px;
+}

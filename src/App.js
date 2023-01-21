@@ -44,6 +44,7 @@ function App() {
     "SIGN_TRANSACTION",
     "SIGNATURE",
     "ACCESS_PUBLIC_KEY",
+    "ACCESS_ALL_ADDRESSES",
   ];
 
   async function connect() {
@@ -86,24 +87,24 @@ function App() {
       {walletConnected ? (
         <div>Connected to {walletAddress.substring(0, 6)}...</div>
       ) : (
-        <button style={button} onClick={connect}>
+        <button className="button" onClick={connect}>
           Use Arconnect Wallet
         </button>
       )}
       <Dropzone />
 
-      <button style={button} onClick={createTransaction}>
+      <button className="button" onClick={createTransaction}>
         Create Transaction
       </button>
 
       {loadingState === "transactionSent" && (
-        <button style={button} onClick={readFromArweave}>
+        <button className="button" onClick={readFromArweave}>
           Log Transaction Data
         </button>
       )}
 
       <input
-        style={input}
+        className="input"
         onChange={(e) => {
           setState(e.target.value);
           setLoadingState("");
@@ -114,24 +115,5 @@ function App() {
     </div>
   );
 }
-
-const button = {
-  outline: "none",
-  border: "1px solid black",
-  backgroundColor: "white",
-  padding: "10px",
-  width: "200px",
-  marginBottom: 10,
-  cursor: "pointer",
-};
-
-const input = {
-  backgroundColor: "#ddd",
-  outline: "none",
-  border: "none",
-  width: "200px",
-  fontSize: "16px",
-  padding: "10px",
-};
 
 export default App;
