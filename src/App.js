@@ -1,33 +1,20 @@
 import "./App.css";
 import { useState, useEffect } from "react";
-
+import Dropzone from "./components/Dropzone.js";
 import Arweave from "arweave";
 
-let arweave;
-
-if (process.env.REACT_APP_WORKSPACE_URL) {
-  /* if in gitpod */
-  let host = process.env.REACT_APP_WORKSPACE_URL.replace("https://", "");
-  arweave = Arweave.init({
-    host,
-    protocol: "https",
-  });
-} else {
-  /* localhost / Arlocal */
-  arweave = Arweave.init({ host: "arweave.net", protocol: "https" });
-
-  /* to use mainnet */
-  // const arweave = Arweave.init({
-  //   host: 'arweave.net',
-  //   port: 443,
-  //   protocol: 'https'
-  // })
-}
+const arweave = Arweave.init({
+  host: "arweave.net",
+  port: 443,
+  protocol: "https",
+});
 
 function App() {
   const [state, setState] = useState("");
   const [transactionId, setTransactionId] = useState("");
   const [loadingState, setLoadingState] = useState("");
+  const [walletConnected, setWalletConnected] = useState(false);
+  const [walletAddress, setWalletAddress] = useState("");
 
   async function createTransaction() {
     if (!state) return;
@@ -47,10 +34,34 @@ function App() {
       }
       setTransactionId(transaction.id);
       setLoadingState("transactionSent");
+      console.log(transaction);
     } catch (err) {
       console.log("error: ", err);
     }
   }
+  const permissions = [
+    "ACCESS_ADDRESS",
+    "SIGN_TRANSACTION",
+    "SIGNATURE",
+    "ACCESS_PUBLIC_KEY",
+  ];
+
+  async function connect() {
+    setWalletConnected(true);
+    return await window.arweaveWallet.connect(permissions);
+  }
+
+  async function getWalletAddress() {
+    return await window.arweaveWallet.getActiveAddress();
+  }
+
+  useEffect(() => {
+    if (walletConnected) {
+      getWalletAddress().then((address) => {
+        setWalletAddress(address);
+      });
+    }
+  }, [walletConnected]);
 
   async function readFromArweave() {
     arweave.transactions
@@ -72,6 +83,15 @@ function App() {
 
   return (
     <div className="container">
+      {walletConnected ? (
+        <div>Connected to {walletAddress.substring(0, 6)}...</div>
+      ) : (
+        <button style={button} onClick={connect}>
+          Use Arconnect Wallet
+        </button>
+      )}
+      <Dropzone />
+
       <button style={button} onClick={createTransaction}>
         Create Transaction
       </button>
