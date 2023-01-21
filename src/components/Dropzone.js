@@ -9,24 +9,11 @@ const arweave = Arweave.init({
 
 const Dropzone = () => {
   const [file, setFile] = useState(null);
-  const [transactionId, setTransactionId] = useState("");
 
-  const handleDrop = useCallback(async (acceptedFiles) => {
+  const handleDrop = useCallback((acceptedFiles) => {
     if (acceptedFiles.length === 1) {
       if (acceptedFiles[0].type.startsWith("image/")) {
         setFile(acceptedFiles[0]);
-        const transaction = await arweave.createTransaction({
-          data: acceptedFiles[0],
-        });
-        let uploader = await arweave.transactions.getUploader(transaction);
-        await arweave.transactions.sign(transaction);
-        while (!uploader.isComplete) {
-          await uploader.uploadChunk();
-          console.log(
-            `${uploader.pctComplete}% complete, ${uploader.uploadedChunks}/${uploader.totalChunks}`
-          );
-        }
-        setTransactionId(transaction.id);
       } else {
         alert("Not an image file.");
       }
@@ -35,6 +22,28 @@ const Dropzone = () => {
     }
   }, []);
 
+  const handleUpload = useCallback(async () => {
+    if (file) {
+      const reader = new FileReader();
+      reader.readAsArrayBuffer(file);
+      reader.onloadend = async () => {
+        const buffer = new Uint8Array(reader.result);
+        const transaction = await arweave.createTransaction({
+          data: buffer,
+        });
+        transaction.addTag("Content-Type", "image/png");
+        await arweave.transactions.sign(transaction);
+        let uploader = await arweave.transactions.getUploader(transaction);
+        while (!uploader.isComplete) {
+          await uploader.uploadChunk();
+          console.log(
+            `${uploader.pctComplete}% complete, ${uploader.uploadedChunks}/${uploader.totalChunks}`
+          );
+        }
+      };
+    }
+  }, [file]);
+
   return (
     <div className="dropzone">
       {file ? (
@@ -42,12 +51,22 @@ const Dropzone = () => {
           <p>{file.name}</p>
           <p>{file.type}</p>
           <p>{file.size} bytes</p>
-          <button onClick={() => handleDrop()}>Upload to Arweave</button>
+          <button onClick={() => handleUpload([file])}>
+            Upload to Arweave
+          </button>
         </div>
       ) : (
         <div>
-          <p>Drop an image here</p>
-          <input type="file" onChange={(e) => handleDrop(e.target.files)} />
+          <button
+            onClick={() => {
+              const input = document.createElement("input");
+              input.type = "file";
+              input.onchange = (e) => handleDrop(e.target.files);
+              input.click();
+            }}
+          >
+            Select file
+          </button>
         </div>
       )}
     </div>
