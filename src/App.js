@@ -85,33 +85,15 @@ function App() {
   return (
     <div className="container">
       {walletConnected ? (
-        <div>Connected to {walletAddress.substring(0, 6)}...</div>
+        <div className="connectedButton">
+          Connected to {walletAddress.substring(0, 6)}...
+        </div>
       ) : (
         <button className="button" onClick={connect}>
           Use Arconnect Wallet
         </button>
       )}
       <Dropzone />
-
-      <button className="button" onClick={createTransaction}>
-        Create Transaction
-      </button>
-
-      {loadingState === "transactionSent" && (
-        <button className="button" onClick={readFromArweave}>
-          Log Transaction Data
-        </button>
-      )}
-
-      <input
-        className="input"
-        onChange={(e) => {
-          setState(e.target.value);
-          setLoadingState("");
-        }}
-        placeholder="text"
-        value={state}
-      />
     </div>
   );
 }

@@ -40,9 +40,11 @@ const Dropzone = () => {
             `${uploader.pctComplete}% complete, ${uploader.uploadedChunks}/${uploader.totalChunks}`
           );
         }
-        // invoke the callback function when the upload is complete
 
         setFile(null);
+        alert(
+          "Upload Successful. Please allow several minutes for transaction to finalize."
+        );
       };
     }
   }, [file]);
@@ -50,10 +52,10 @@ const Dropzone = () => {
   return (
     <div>
       {file ? (
-        <div>
-          <p>{file.name}</p>
-          <p>{file.type}</p>
-          <p>{file.size} bytes</p>
+        <div className="dropzone">
+          <p>Filename: {file.name}</p>
+          <p>File Type: {file.type}</p>
+          <p>Size: {file.size} bytes</p>
           <button className="button" onClick={handleUpload}>
             Upload to Arweave
           </button>
