@@ -34,6 +34,7 @@ function App() {
 
   return (
     <div className="container">
+      <h3>Your Permaweb Photo Album, Powered by Arweave</h3>
       {walletConnected ? (
         <div className="connectedButton">
           Connected to {walletAddress.substring(0, 6)}...

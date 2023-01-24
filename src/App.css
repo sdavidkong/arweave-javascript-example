@@ -1,3 +1,10 @@
+@import url("https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;700&display=swap");
+
+h3 {
+  font-family: "Rajdhani", sans-serif;
+  font-size: 38px;
+}
+
 .container {
   min-height: 100vh;
   padding: 0 0.5rem;
@@ -28,8 +35,9 @@
 }
 .dropzone p {
   text-align: center;
-  font-size: 20px;
+  font-size: 24px;
   padding: 10px;
+  font-family: "Rajdhani", sans-serif;
 }
 
 .button {
@@ -44,6 +52,14 @@
   cursor: pointer;
   text-align: center;
   border-radius: 10px;
+  font-size: 20px;
+  font-family: "Rajdhani", sans-serif;
+}
+
+.button:hover {
+  background-color: #130606;
+  color: white;
+  transition: all 0.2s ease-in-out;
 }
 
 .connectedButton {
@@ -55,6 +71,8 @@
   marginbottom: 10;
   text-align: center;
   border-radius: 10px;
+  font-size: 20px;
+  font-family: "Rajdhani", sans-serif;
 }
 
 .image-container {
