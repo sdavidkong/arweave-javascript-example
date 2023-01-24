@@ -4,6 +4,9 @@ h3 {
   font-family: "Rajdhani", sans-serif;
   font-size: 38px;
 }
+h2 {
+  font-family: "Rajdhani", sans-serif;
+}
 
 .container {
   min-height: 100vh;

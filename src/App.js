@@ -46,6 +46,23 @@ function App() {
       )}
       <Dropzone />
       <Gallery walletAddress={walletAddress} />
+      <h2>
+        Note: In order to use this app, you must have{" "}
+        <a href="https://www.arconnect.io/" target="_blank">
+          Arconnect Wallet
+        </a>{" "}
+        installed and funded with some{" "}
+        <a href="https://faucet.arweave.net/" target="_blank">
+          AR token
+        </a>
+        .{" "}
+      </h2>
+      <h2>
+        Created by{" "}
+        <a href="https://twitter.com/ShuaiDavidKong" target="_blank">
+          davidkong.eth
+        </a>
+      </h2>
     </div>
   );
 }
